@@ -1,0 +1,46 @@
+.containerBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.todoItem {
+  display: flex;
+  align-items: center;
+}
+
+.todoItem span {
+  font-size: large;
+}
+
+.importantIcon {
+  display: flex;
+  margin-right: 4px;
+}
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.editContainer {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.editContainer input {
+  flex-grow: 1;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-size: large;
+}

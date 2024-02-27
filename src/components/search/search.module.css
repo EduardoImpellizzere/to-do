@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: var(--super-light-grey);
+}
+
+.searchContainer {
+  display: flex;
+  flex: 3;
+  border: 1px solid var(--borders);
+  margin-right: 20px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.searchContainer input {
+  width: 100%;
+  padding: 20px;
+  border: none;
+  outline: none;
+  font-size: large;
+}
+
+.filterContainer {
+  display: flex;
+  flex: 1;
+  margin-right: 20px;
+}
+
+.checkboxContainer {
+  display: flex;
+  flex: 1;
+}

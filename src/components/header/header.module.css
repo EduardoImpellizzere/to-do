@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--glaucous);
+  padding: 20px;
+}
+
+.header h2 {
+  font-size: 32px;
+  color: white;
+}
+
+.themeContainer {
+  display: flex;
+  align-items: center;
+}

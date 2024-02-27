@@ -1,0 +1,40 @@
+.bigContainer {
+  display: flex;
+  flex-flow: column;
+  margin: 0 20px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  height: 65px;
+}
+
+.addContainer {
+  flex-grow: 1;
+  display: flex;
+  border: 1px solid var(--borders);
+  border-radius: 5px;
+  background-color: white;
+}
+
+.addContainer input {
+  flex-grow: 1;
+  width: 100%;
+  padding: 20px;
+  border: none;
+  outline: none;
+  font-size: large;
+}
+
+.container button {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: large;
+}
+
+.importantContainer {
+  padding-left: 10px;
+  background-color: var(--platinum);
+}
