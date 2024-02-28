@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback } from "react";
-import Footer from "@/components/footer/footer";
+import { useEffect, useState } from "react";
 import Header from "@/components/header/header";
+import Footer from "@/components/footer/footer";
 import AddToDoItem from "@/components/todos/addToDoItem";
 import ToDoList from "@/components/todos/toDoList";
 import Search from "@/components/search/search";
