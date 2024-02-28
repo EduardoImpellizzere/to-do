@@ -4,7 +4,13 @@ This project is a To-Do List application built with [Next.js](https://nextjs.org
 
 ## Getting Started
 
-First, run the development server:
+First, install all the dependencies:
+
+```bash
+npm install
+```
+
+Second, run the development server:
 
 ```bash
 npm run dev
@@ -16,7 +22,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Finally, open [http://localhost:3000](http://localhost:3000) with your browser.
 
 ## Features
 
@@ -25,6 +31,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Delete: Remove tasks that are completed or no longer needed.
 - Filter: Organize your tasks by filtering them based on completion status.
 - Search: Easily find specific tasks using the search functionality.
+
+### Data Refresh
+Clicking the refresh button or calling the api/refresh endpoint will restore the data to its original state. The application's data is managed in a JSON file.
 
 ## Learn More
 
