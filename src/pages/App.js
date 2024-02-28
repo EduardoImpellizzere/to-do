@@ -1,20 +1,16 @@
+import { useEffect, useState, useCallback } from "react";
 import Footer from "@/components/footer/footer";
 import Header from "@/components/header/header";
 import AddToDoItem from "@/components/todos/addToDoItem";
 import ToDoList from "@/components/todos/toDoList";
-import { useEffect, useState } from "react";
 import Search from "@/components/search/search";
 
 const App = () => {
   const [todos, setTodos] = useState([]);
   const [filteredTodos, setFilteredTodos] = useState([]);
   const [showFilteredTodos, setShowFilteredTodos] = useState(false);
-
   const [activeFilter, setActiveFilter] = useState("all");
-
-  const wrapperSetActiveFilter = (filter) => {
-    setActiveFilter(filter);
-  };
+  const [filterImportant, setFilterImportant] = useState(false);
 
   const fetchTodos = async () => {
     try {
@@ -26,15 +22,15 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const todosData = await fetchTodos();
-      setTodos(todosData);
-    };
-    fetchData();
-  }, []);
+  const handleUpdateActiveFilter = (filter) => {
+    setActiveFilter(filter);
+  };
 
-  const addTodo = async (newTodo) => {
+  const handleUpdateFilterImportant = () => {
+    setFilterImportant(!filterImportant);
+  };
+
+  const handleAddTodo = async (newTodo) => {
     try {
       await fetch("/api/todo", {
         method: "POST",
@@ -50,7 +46,7 @@ const App = () => {
     }
   };
 
-  const editTodo = async (todoId, editedTodo) => {
+  const handleEditTodo = async (todoId, editedTodo) => {
     try {
       await fetch(`/api/todo/${todoId}`, {
         method: "PUT",
@@ -92,7 +88,7 @@ const App = () => {
     }
   };
 
-  const deleteTodo = async (todoId) => {
+  const handleDeleteTodo = async (todoId) => {
     try {
       await fetch(`/api/todo/${todoId}`, {
         method: "DELETE",
@@ -104,7 +100,7 @@ const App = () => {
     }
   };
 
-  const refreshTodo = async () => {
+  const handleRefresh = async () => {
     try {
       await fetch("/api/todo/refresh", {
         method: "POST",
@@ -120,7 +116,7 @@ const App = () => {
     }
   };
 
-  const clearCompletedTodo = async () => {
+  const handleClearCompleted = async () => {
     try {
       await fetch("/api/todo/clear", {
         method: "POST",
@@ -136,56 +132,95 @@ const App = () => {
     }
   };
 
-  const filterTodo = async (importantFilter) => {
-    if (activeFilter === "all" && !importantFilter) {
+  const handleSearch = (searchText) => {
+    setActiveFilter("all");
+    setFilterImportant(false);
+    const searchResults = searchText.trim().toLowerCase();
+
+    if (searchResults === "") {
       setFilteredTodos([]);
       setShowFilteredTodos(false);
       return;
     }
 
-    let urlFilter = activeFilter;
-
-    if (activeFilter === "all" && importantFilter) {
-      urlFilter = "important";
-    }
-
-    try {
-      const initialUrl = "/api/todo/search";
-      const urlParams = new URLSearchParams();
-      urlParams.set("filter", urlFilter);
-
-      if (importantFilter && activeFilter !== "all") {
-        urlParams.append("filter", "important");
-      }
-
-      const updatedUrl = `${initialUrl}?${urlParams.toString()}`;
-      const response = await fetch(updatedUrl);
-      const result = await response.json();
-      setFilteredTodos(result.todos);
-      setShowFilteredTodos(result.todos.length > 0);
-    } catch (e) {
-      console.error("Error filtering todos:", e);
+    if (filteredTodos.length > 0) {
+      const filteredResults = filteredTodos.filter((todo) =>
+        todo.todoText.toLowerCase().includes(searchResults)
+      );
+      setFilteredTodos(filteredResults);
+      setShowFilteredTodos(filteredResults.length > 0);
+    } else {
+      const allResults = todos.filter((todo) =>
+        todo.todoText.toLowerCase().includes(searchResults)
+      );
+      setFilteredTodos(allResults);
+      setShowFilteredTodos(allResults.length > 0);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const todosData = await fetchTodos();
+      setTodos(todosData);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (activeFilter === "all" && !filterImportant) {
+        setFilteredTodos([]);
+        setShowFilteredTodos(false);
+        return;
+      }
+
+      let urlFilter = activeFilter;
+
+      if (activeFilter === "all" && filterImportant) {
+        urlFilter = "important";
+      }
+
+      try {
+        const initialUrl = "/api/todo/search";
+        const urlParams = new URLSearchParams();
+        urlParams.set("filter", urlFilter);
+
+        if (filterImportant && activeFilter !== "all") {
+          urlParams.append("filter", "important");
+        }
+
+        const updatedUrl = `${initialUrl}?${urlParams.toString()}`;
+        const response = await fetch(updatedUrl);
+        const result = await response.json();
+        setFilteredTodos(result.todos);
+        setShowFilteredTodos(result.todos.length > 0);
+      } catch (e) {
+        console.error("Error filtering todos:", e);
+      }
+    };
+    fetchData();
+  }, [activeFilter, filterImportant]);
 
   return (
     <>
       <Header />
       <Search
-        onFilter={filterTodo}
+        onSearch={handleSearch}
+        onUpdateActiveFilter={handleUpdateActiveFilter}
+        onUpdateFilterImportant={handleUpdateFilterImportant}
+        isFilterImportantActive={filterImportant}
         activeFilter={activeFilter}
-        wrapperSetActiveFilter={wrapperSetActiveFilter}
       />
-      <AddToDoItem onAddTodo={addTodo} />
+      <AddToDoItem onAddTodo={handleAddTodo} />
       <ToDoList
+        onEditTodo={handleEditTodo}
+        onDeleteTodo={handleDeleteTodo}
         todos={showFilteredTodos ? filteredTodos : todos}
-        onEdit={editTodo}
-        onDelete={deleteTodo}
       />
       <Footer
+        onRefresh={handleRefresh}
+        onClearCompleted={handleClearCompleted}
         listCount={showFilteredTodos ? filteredTodos.length : todos.length}
-        onClearCompleted={clearCompletedTodo}
-        onRefresh={refreshTodo}
       />
     </>
   );

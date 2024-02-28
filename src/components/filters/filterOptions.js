@@ -1,29 +1,23 @@
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-const FilterOptions = ({
-  onFilter,
-  filterImportant,
-  activeFilter,
-  wrapperSetActiveFilter,
-}) => {
+const FilterOptions = ({ onUpdateActiveFilter, activeFilter }) => {
   const options = {
     all: { text: "All", value: "all" },
     pending: { text: "Pending", value: "pending" },
     completed: { text: "Completed", value: "completed" },
   };
 
-  const handleFilters = (event, newFilter) => {
-    wrapperSetActiveFilter(newFilter);
-    onFilter(filterImportant);
+  const handleFilterChange = (event, newFilter) => {
+    onUpdateActiveFilter(newFilter);
   };
 
   return (
     <ToggleButtonGroup
+      onChange={handleFilterChange}
       value={activeFilter}
-      color="primary"
       exclusive
-      onChange={handleFilters}
+      color="primary"
       aria-label="tasks filters"
     >
       <ToggleButton value={options.all.value} aria-label="all tasks">

@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import styles from "./addToDoItem.module.css";
-import { useState } from "react";
 
 const AddToDoItem = ({ onAddTodo }) => {
   const buttonText = "+ Add task";
@@ -14,11 +14,11 @@ const AddToDoItem = ({ onAddTodo }) => {
   const [inputValue, setInputValue] = useState("");
   const [isImportant, setIsImportant] = useState(false);
 
-  const handleInputChange = (event) => {
+  const handleInputValueChange = (event) => {
     setInputValue(event.target.value);
   };
 
-  const handleButtonClick = () => {
+  const handleAddButtonClick = () => {
     const trimmedValue = inputValue.trim();
 
     if (trimmedValue !== "") {
@@ -42,18 +42,18 @@ const AddToDoItem = ({ onAddTodo }) => {
       <div className={styles.container}>
         <div className={styles.addContainer}>
           <input
+            onChange={handleInputValueChange}
+            value={inputValue}
             type={inputProperties.type}
             placeholder={inputProperties.placeHolderText}
             maxLength={inputProperties.maxLength}
-            value={inputValue}
-            onChange={handleInputChange}
           />
         </div>
         <Button
+          onClick={handleAddButtonClick}
+          disabled={!inputValue}
           variant="contained"
           color="warning"
-          onClick={handleButtonClick}
-          disabled={!inputValue}
         >
           {buttonText}
         </Button>
@@ -63,8 +63,8 @@ const AddToDoItem = ({ onAddTodo }) => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={isImportant}
                 onChange={() => setIsImportant(!isImportant)}
+                checked={isImportant}
               />
             }
             label={checkboxText}

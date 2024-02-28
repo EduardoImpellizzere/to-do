@@ -1,13 +1,12 @@
-import { IconButton, Checkbox, FormControlLabel } from "@mui/material";
-import styles from "./toDoItem.module.css";
+import { useState } from "react";
+import { IconButton, Checkbox } from "@mui/material";
 import { BsFillPencilFill, BsFillTrashFill } from "react-icons/bs";
 import { FaExclamation, FaRegCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { BsExclamationSquare, BsExclamationSquareFill } from "react-icons/bs";
-import { useState } from "react";
+import styles from "./toDoItem.module.css";
 
-const ToDoItem = ({ todo, onEdit, onDelete }) => {
+const ToDoItem = ({ onEditTodo, onDeleteTodo, todo }) => {
   const { todoText, completed, important } = todo;
-
   const inputProperties = {
     type: "text",
     maxLength: 50,
@@ -20,7 +19,7 @@ const ToDoItem = ({ todo, onEdit, onDelete }) => {
 
   const handleContainerClick = () => {
     const editedTodo = { ...todo, completed: !completed };
-    onEdit(todo.id, editedTodo);
+    onEditTodo(todo.id, editedTodo);
   };
 
   const handleEditClick = () => {
@@ -33,7 +32,7 @@ const ToDoItem = ({ todo, onEdit, onDelete }) => {
       todoText: editedText,
       important: isImportant,
     };
-    onEdit(todo.id, editedTodo);
+    onEditTodo(todo.id, editedTodo);
     setIsEditing(false);
   };
 
@@ -57,33 +56,43 @@ const ToDoItem = ({ todo, onEdit, onDelete }) => {
   };
 
   const handleDeleteClick = () => {
-    onDelete(todo.id);
+    onDeleteTodo(todo.id);
   };
 
   return (
-    <div className={styles.containerBox}>
+    <div className={styles.containerBox} onClick={handleContainerClick}>
       {isEditing ? (
         <div className={styles.editContainer}>
           <input
-            type={inputProperties.type}
-            maxLength={inputProperties.maxLength}
-            value={editedText}
             onChange={handleInputChange}
             onKeyDown={handleInputKeyDown}
+            value={editedText}
             autoFocus
+            type={inputProperties.type}
+            maxLength={inputProperties.maxLength}
           />
           <Checkbox
-            {...label}
-            checked={isImportant}
             onChange={handleCheckboxChange}
             onClick={(event) => event.stopPropagation()}
+            checked={isImportant}
             icon={<BsExclamationSquare size={20} />}
             checkedIcon={<BsExclamationSquareFill size={20} color="orange" />}
+            {...label}
           />
-          <IconButton onClick={handleSaveClick}>
+          <IconButton
+            onClick={(event) => {
+              event.stopPropagation();
+              handleSaveClick();
+            }}
+          >
             <FaRegCheckCircle size={20} color="green" />
           </IconButton>
-          <IconButton onClick={handleCancelClick}>
+          <IconButton
+            onClick={(event) => {
+              event.stopPropagation();
+              handleCancelClick();
+            }}
+          >
             <FaTimesCircle size={20} color="red" />
           </IconButton>
         </div>
@@ -100,10 +109,20 @@ const ToDoItem = ({ todo, onEdit, onDelete }) => {
       )}
       {!isEditing && (
         <div className={styles.buttonsContainer}>
-          <IconButton onClick={handleEditClick}>
+          <IconButton
+            onClick={(event) => {
+              event.stopPropagation();
+              handleEditClick();
+            }}
+          >
             <BsFillPencilFill size={18} />
           </IconButton>
-          <IconButton onClick={handleDeleteClick}>
+          <IconButton
+            onClick={(event) => {
+              event.stopPropagation();
+              handleDeleteClick();
+            }}
+          >
             <BsFillTrashFill size={18} />
           </IconButton>
         </div>

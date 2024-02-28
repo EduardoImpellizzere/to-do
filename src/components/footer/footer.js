@@ -1,8 +1,8 @@
 import { Button, IconButton } from "@mui/material";
-import styles from "./footer.module.css";
 import { HiOutlineRefresh } from "react-icons/hi";
+import styles from "./footer.module.css";
 
-const Footer = ({ listCount, onClearCompleted, onRefresh }) => {
+const Footer = ({ onRefresh, onClearCompleted, listCount }) => {
   const buttonText = "Clear completed";
 
   const handleClearCompleted = () => {
@@ -15,14 +15,14 @@ const Footer = ({ listCount, onClearCompleted, onRefresh }) => {
 
   return (
     <footer className={styles.footer}>
-      <IconButton aria-label="refresh list" onClick={handleRefreshClick}>
+      <IconButton onClick={handleRefreshClick} aria-label="refresh list">
         <HiOutlineRefresh size={24} color="white" />
       </IconButton>
       <Button
-        variant="contained"
-        color="warning"
         onClick={handleClearCompleted}
         disabled={listCount === 0}
+        variant="contained"
+        color="warning"
       >
         {buttonText}
       </Button>

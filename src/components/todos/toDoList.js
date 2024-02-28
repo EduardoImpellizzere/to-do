@@ -1,16 +1,16 @@
 import ToDoItem from "./toDoItem";
 import styles from "./toDoList.module.css";
 
-const ToDoList = ({ todos, onEdit, onDelete, onComplete }) => {
+const ToDoList = ({ onEditTodo, onDeleteTodo, todos }) => {
   const emptyText = "Start adding some tasks";
   return (
     <div className={styles.listContainer}>
       {todos.map((todo) => (
         <ToDoItem
+          onEditTodo={onEditTodo}
+          onDeleteTodo={onDeleteTodo}
           key={todo.id}
           todo={todo}
-          onEdit={onEdit}
-          onDelete={onDelete}
         />
       ))}
       {todos.length === 0 && (
